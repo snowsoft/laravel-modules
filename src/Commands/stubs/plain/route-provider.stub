@@ -1,0 +1,25 @@
+<?php
+
+namespace $MODULE_NAMESPACE$\$MODULE$\Providers;
+
+use Illuminate\Routing\Router;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseRouteServiceProvider;
+
+class $NAME$ extends BaseRouteServiceProvider
+{
+    /**
+     * The root namespace to assume when generating URLs to actions.
+     *
+     * @var string
+     */
+    protected $namespace = '$MODULE_NAMESPACE$\$MODULE$\Http\Controllers';
+
+    /**
+     * Define the routes for the application.
+     *
+     * @return void
+     */
+    public function map()
+    {
+    }
+}
