@@ -19,13 +19,11 @@
 - [Auto Scan Vendor Directory](#auto-scan-vendor-directory)
 - [Publishing Modules](#publishing-modules)
 
-`llama-laravel/modules` is a laravel package which created to manage your large laravel app using modules. Module is like a laravel package, it has some views, controllers or models. This package is supported and tested in Laravel 5.
+`llama-laravel/modules` is a laravel package which created to manage your large laravel app using modules. Module is like a laravel package, it has some views, controllers or models. 
 
-This package is a re-published, re-organised and maintained version of [pingpong/modules](https://github.com/pingpong-labs/modules), which isn't maintained anymore. This package is used in [AsgardCMS](https://asgardcms.com/).
+This package is supported and tested in Laravel 5.
 
-With one big added bonus that the original package didn't have: **tests**.
-
-Find out why you should use this package in the article: [Writing modular applications with laravel-modules](https://nicolaswidart.com/blog/writing-modular-applications-with-laravel-modules).
+This package was inspired by [nwidart/laravel-modules](https://github.com/nWidart/laravel-modules).
 
 ## Upgrade Guide
 
@@ -98,7 +96,7 @@ By default controllers, entities or repositories are not loaded automatically. Y
 
 ## Creating A Module
 
-To create a new module you can simply run :
+To create a new module, you can simply run:
 
 ```
 php artisan module:make <module-name>
@@ -126,7 +124,7 @@ php artisan module:make Blog --plain
 php artisan module:make Blog -p
 ```
 
-**Naming Convension**
+**Naming Convention**
 
 Because we are autoloading the modules using `psr-4`, we strongly recommend using `StudlyCase` convension.
 
