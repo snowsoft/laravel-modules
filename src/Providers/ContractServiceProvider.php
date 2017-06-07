@@ -5,7 +5,7 @@ use Illuminate\Support\ServiceProvider;
 use Llama\Modules\Contracts\RepositoryInterface;
 use Llama\Modules\Repository;
 
-class ContractsServiceProvider extends ServiceProvider
+class ContractServiceProvider extends ServiceProvider
 {
 
     /**

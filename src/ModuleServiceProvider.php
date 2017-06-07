@@ -1,15 +1,15 @@
 <?php
-
 namespace Llama\Modules;
 
 use Illuminate\Support\ServiceProvider;
 use Llama\Modules\Providers\BootstrapServiceProvider;
 use Llama\Modules\Providers\ConsoleServiceProvider;
-use Llama\Modules\Providers\ContractsServiceProvider;
+use Llama\Modules\Providers\ContractServiceProvider;
 use Llama\Modules\Support\Stub;
 
 class ModuleServiceProvider extends ServiceProvider
 {
+
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -23,7 +23,7 @@ class ModuleServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerNamespaces();
-
+        
         $this->registerModules();
     }
 
@@ -41,21 +41,17 @@ class ModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerServices();
-        $this->setupStubPath();
+        $this->registerStubPath();
         $this->registerProviders();
     }
 
     /**
-     * Setup stub path.
+     * Register stub path.
      */
-    public function setupStubPath()
+    public function registerStubPath()
     {
         $this->app->booted(function ($app) {
-            Stub::setBasePath(__DIR__ . '/Commands/stubs');
-
-            if ($app['modules']->config('stubs.enabled') === true) {
-                Stub::setBasePath($app['modules']->config('stubs.path'));
-            }
+            Stub::setBasePath($app['modules']->config('stubs.path') ?: __DIR__ . '/Commands/stubs');
         });
     }
 
@@ -67,7 +63,7 @@ class ModuleServiceProvider extends ServiceProvider
         $configPath = __DIR__ . '/../config/config.php';
         $this->mergeConfigFrom($configPath, 'llama.modules');
         $this->publishes([
-            $configPath => config_path('llama/modules.php'),
+            $configPath => config_path('llama/modules.php')
         ], 'config');
     }
 
@@ -88,7 +84,9 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['modules'];
+        return [
+            'modules'
+        ];
     }
 
     /**
@@ -97,6 +95,6 @@ class ModuleServiceProvider extends ServiceProvider
     protected function registerProviders()
     {
         $this->app->register(ConsoleServiceProvider::class);
-        $this->app->register(ContractsServiceProvider::class);
+        $this->app->register(ContractServiceProvider::class);
     }
 }

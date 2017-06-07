@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Database\Console\Seeds\SeederMakeCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Llama\Modules\Traits\ModuleCommandTrait;
+use Llama\Modules\Support\Stub;
 
 class MakeSeederCommand extends SeederMakeCommand
 {
@@ -78,11 +79,60 @@ class MakeSeederCommand extends SeederMakeCommand
      */
     protected function qualifyClass($name)
     {
-        if (Str::endsWith(strtolower($name), 'seeder') === false) {
+        $rootNamespace = $this->rootNamespace();
+        
+        if (Str::startsWith($name, $rootNamespace)) {
+            return $name;
+        }
+        
+        $name = str_replace('/', '\\', $name);
+        
+        return $this->qualifyClass($this->getDefaultNamespace(trim($rootNamespace, '\\')) . '\\' . $name);
+    }
+
+    /**
+     *
+     * @return array|string
+     */
+    protected function getNameInput()
+    {
+        $name = Str::studly(parent::getNameInput());
+        if (Str::contains(strtolower($name), 'seeder') === false) {
             $name .= ($this->option('master') ? 'DatabaseSeeder' : 'TableSeeder');
         }
         
-        return Str::studly($name);
+        return $name;
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        return with(new Stub('/seeder.stub'))->getPath();
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param string $rootNamespace            
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace . '\Database\Seeds';
+    }
+
+    /**
+     * Get the root namespace for the class.
+     *
+     * @return string
+     */
+    protected function rootNamespace()
+    {
+        return $this->laravel['modules']->getNamespace() . '\\' . $this->getModuleName();
     }
 
     /**
@@ -93,6 +143,6 @@ class MakeSeederCommand extends SeederMakeCommand
      */
     protected function getPath($name)
     {
-        return $this->laravel['modules']->getPath() . '/' . $this->getModuleName() . '/' . $this->laravel['modules']->config('paths.generator.seed', 'Database/Seeds') . '/' . $name . '.php';
+        return $this->laravel['modules']->getPath() . '/' . $this->getModuleName() . str_replace('\\', '/', str_replace_first($this->rootNamespace(), '', $name)) . '.php';
     }
 }

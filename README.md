@@ -134,21 +134,11 @@ Because we are autoloading the modules using `psr-4`, we strongly recommend usin
 your-laravel/app/Modules/
   ├── Blog/
       ├── Config/
-      ├── Console/
       ├── Database/
-          ├── Migrations/
           ├── Seeds/
-      ├── Emails/
-      ├── Events/
       ├── Http/
           ├── Controllers/
-          ├── Middleware/
-          ├── Requests/
-      ├── Jobs/
-      ├── Models/
-      ├── Notifications/
       ├── Providers/
-      ├── Repositories/
       ├── Resources/
           ├── assets/
           ├── lang/
@@ -156,10 +146,8 @@ your-laravel/app/Modules/
       ├── Routes/
           ├── web.php
           ├── api.php
-      ├── Tests/
       ├── composer.json
       ├── module.json
-      ├── start.php
 ```
 
 ## Artisan Commands
@@ -192,7 +180,7 @@ Create new command for the specified module.
 
 ```
 php artisan module:make-command CustomCommand blog
-
+#OR
 php artisan module:make-command CustomCommand --command=custom:command blog
 ```
 
@@ -200,9 +188,9 @@ Create new migration for the specified module.
 
 ```
 php artisan module:make-migration create_users_table blog
-
+#OR
 php artisan module:make-migration create_users_table blog --create=users
-
+#OR
 php artisan module:make-migration add_email_to_users_table blog --table=users
 ```
 
@@ -210,9 +198,9 @@ Rollback, Reset and Refresh The Modules Migrations.
 
 ```
 php artisan module:migrate-rollback
-
+#OR
 php artisan module:migrate-reset
-
+#OR
 php artisan module:migrate-refresh
 ```
 
@@ -220,9 +208,9 @@ Rollback, Reset and Refresh The Migrations for the specified module.
 
 ```
 php artisan module:migrate-rollback blog
-
+#OR
 php artisan module:migrate-reset blog
-
+#OR
 php artisan module:migrate-refresh blog
 ```
 
@@ -286,6 +274,12 @@ Create new service provider for the specified module.
 php artisan module:make-provider MyServiceProvider blog
 ```
 
+Create new policy for the specified module.
+
+```
+php artisan module:make-policy PostsPolicy blog
+```
+
 Create new route provider for the specified module.
 
 ```
@@ -326,7 +320,7 @@ Create new mail for the specified module.
 
 ```
 php artisan module:make-mail WelcomeEmail checkout
-
+#OR
 php artisan module:make-mail WelcomeEmail checkout --markdown=emails.checkout.shipped
 ```
 
@@ -334,7 +328,7 @@ Create new notification for the specified module.
 
 ```
 php artisan module:make-notification InvoicePaid checkout
-
+#OR
 php artisan module:make-notification InvoicePaid checkout --markdown=notifications.checkout.shipped
 ```
 
@@ -410,7 +404,7 @@ Find a specific module.
 
 ```php
 Module::find('name');
-// OR
+#OR
 Module::get('name');
 ```
 
@@ -528,6 +522,12 @@ Get modules's assets path.
 Module::getAssetsPath();
 ```
 
+Get modules's namespace.
+
+```php
+Module::getNamespace();
+```
+
 Get asset url from specific module.
 
 ```php
@@ -581,7 +581,7 @@ $module->getPath();
 Get extra path.
 
 ```php
-$module->getExtraPath('Assets');
+$module->getExtraPath('assets');
 ```
 
 Disable the specified module.
@@ -602,6 +602,12 @@ Delete the specified module.
 $module->delete();
 ```
 
+Get namespace specified module.
+
+```php
+$module->getNamespace();
+```
+
 ## Custom Namespaces
 
 When you create a new module it also registers new custom namespace for `Lang`, `View` and `Config`. For example, if you create a new module named blog, it will also register new namespace/hint blog for that module. Then, you can use that namespace for calling `Lang`, `View` or `Config`. Following are some examples of its usage:
@@ -610,20 +616,24 @@ Calling Lang:
 
 ```php
 Lang::get('blog::group.name');
+#OR
+trans('blog::group.name');
 ```
 
 Calling View:
 
 ```php
-View::make('blog::index')
-
-View::make('blog::partials.sidebar')
+View::make('blog::index');
+#OR
+View::make('blog::partials.sidebar');
 ```
 
 Calling Config:
 
 ```php
-Config::get('blog.name')
+Config::get('blog.name');
+#OR
+config('blog.name');
 ```
 
 ## Publishing Modules
@@ -643,7 +653,7 @@ return [
     'enabled' => true
   ]
   //...
-]
+];
 ```
 
 You can verify the module has been installed using `module:list` command:
@@ -661,6 +671,7 @@ You can follow this step to publish your module.
 1. Create A Module.
 2. Push the module to github.
 3. Submit your module to the packagist website.
+
 Submit to packagist is very easy, just give your github repository, click submit and you done.
 
 

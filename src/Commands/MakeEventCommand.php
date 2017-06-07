@@ -58,7 +58,7 @@ class MakeEventCommand extends EventMakeCommand
      */
     protected function rootNamespace()
     {
-        return $this->laravel['modules']->config('namespace') . '\\' . $this->getModuleName();
+        return $this->laravel['modules']->getNamespace() . '\\' . $this->getModuleName();
     }
 
     /**
@@ -69,6 +69,6 @@ class MakeEventCommand extends EventMakeCommand
      */
     protected function getPath($name)
     {
-        return $this->laravel['modules']->getPath() . '/' . $this->getModuleName() . '/' . str_replace('\\', '/', str_replace_first($this->rootNamespace(), '', $name)) . '.php';
+        return $this->laravel['modules']->getPath() . '/' . $this->getModuleName() . str_replace('\\', '/', str_replace_first($this->rootNamespace(), '', $name)) . '.php';
     }
 }

@@ -1,7 +1,6 @@
 <?php
 namespace Llama\Modules\Commands;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Console\Command;
@@ -57,7 +56,7 @@ class DbSeedCommand extends Command
      * @return Repository
      * @throws ModuleNotFoundException
      */
-    public function getModuleRepository()
+    protected function getModuleRepository()
     {
         $modules = $this->laravel['modules'];
         if (! $modules instanceof Repository) {
@@ -71,22 +70,24 @@ class DbSeedCommand extends Command
      * @param Module $module            
      * @return void
      */
-    public function moduleSeeding(Module $module)
+    protected function moduleSeeding(Module $module)
     {
-        $name = $module->getStudlyName();
-        $class = $this->option('class') ?: $name . 'DatabaseSeeder';
-        
-        $seeders = [];
-        foreach (Finder::create()->files()->name($class . '.php')->in($module->getPath() . '/' . $this->getDefaultNamespace()) as $file) {
-            $this->laravel['files']->requireOnce($file->getRealPath());
-            $seeders[] = $file->getBasename('.php');
-        }
-        
-        if (count($seeders) > 0) {
-            array_walk($seeders, [$this, 'dbSeed']);
+        if (class_exists($className = $this->getSeederName($module))) {
+            $this->dbSeed($className);
             
-            $this->info("Module [$name] seeded.");
+            $this->info("Module [{$module->getStudlyName()}] seeded.");
         }
+    }
+
+    /**
+     * Get master database seeder name for the specified module.
+     *
+     * @param Module $module            
+     * @return string
+     */
+    protected function getSeederName(Module $module)
+    {
+        return $module->getNamespace() . '\\Database\\Seeds\\' . ($this->option('class') ?: $module->getStudlyName() . 'DatabaseSeeder');
     }
 
     /**
@@ -111,16 +112,6 @@ class DbSeedCommand extends Command
         }
         
         $this->call('db:seed', $params);
-    }
-
-    /**
-     * Get default namespace.
-     *
-     * @return string
-     */
-    protected function getDefaultNamespace()
-    {
-        return $this->laravel['modules']->config('paths.generator.seed', 'Database/Seeds');
     }
 
     /**

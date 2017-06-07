@@ -1,11 +1,11 @@
 <?php
 
-namespace $MODULE_NAMESPACE$\$MODULE$\Providers;
+namespace DummyNamespace;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseRouteServiceProvider;
 
-class $NAME$ extends BaseRouteServiceProvider
+class DummyClass extends BaseRouteServiceProvider
 {
     /**
      * This namespace is applied to your controller routes.
@@ -14,7 +14,7 @@ class $NAME$ extends BaseRouteServiceProvider
      *
      * @var string
      */
-    protected $namespace = '$MODULE_NAMESPACE$\$MODULE$\Http\Controllers';
+    protected $namespace = 'DummyControllerNamespace';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -54,7 +54,7 @@ class $NAME$ extends BaseRouteServiceProvider
             'middleware' => 'web',
             'namespace' => $this->namespace,
         ], function ($router) {
-            require __DIR__ . '/../$PATH_ROUTE$/web.php';;
+            require __DIR__ . '/../DummyRoutePath/web.php';;
         });
     }
 
@@ -72,7 +72,7 @@ class $NAME$ extends BaseRouteServiceProvider
             'namespace' => $this->namespace,
             'prefix' => 'api',
         ], function ($router) {
-            require __DIR__ . '/../$PATH_ROUTE$/api.php';
+            require __DIR__ . '/../DummyRoutePath/api.php';
         });
     }
 }

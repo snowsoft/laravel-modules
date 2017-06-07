@@ -1,14 +1,17 @@
 <?php
 namespace Llama\Modules\Commands;
 
-use Llama\Modules\Support\Stub;
-use Llama\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Support\Str;
+use Illuminate\Routing\Console\ControllerMakeCommand;
+use Llama\Modules\Traits\ModuleCommandTrait;
+use Llama\Modules\Support\Stub;
+use Llama\Modules\Traits\ReplaceNamespaceTrait;
 
-class MakeControllerCommand extends BaseCommand
+class MakeControllerCommand extends ControllerMakeCommand
 {
     use ModuleCommandTrait;
+    use ReplaceNamespaceTrait;
 
     /**
      * The name of argument being used.
@@ -32,38 +35,6 @@ class MakeControllerCommand extends BaseCommand
     protected $description = 'Generate new restful controller for the specified module.';
 
     /**
-     * Get controller name.
-     *
-     * @return string
-     */
-    public function getDestinationFilePath()
-    {
-        return $this->laravel['modules']->getModulePath($this->getModuleName()) . $this->getDefaultNamespace() . '/' . $this->getControllerName() . '.php';
-    }
-
-    /**
-     *
-     * @return string
-     */
-    protected function getTemplateContents()
-    {
-        $module = $this->laravel['modules']->findOrFail($this->getModuleName());
-        
-        return with(new Stub($this->getStubName(), [
-            'MODULENAME' => $module->getStudlyName(),
-            'CONTROLLERNAME' => $this->getControllerName(),
-            'NAMESPACE' => $module->getStudlyName(),
-            'CLASS_NAMESPACE' => $this->getClassNamespace($module),
-            'CLASS' => $this->getControllerName(),
-            'LOWER_NAME' => $module->getLowerName(),
-            'MODULE' => $this->getModuleName(),
-            'NAME' => $this->getModuleName(),
-            'STUDLY_NAME' => $module->getStudlyName(),
-            'MODULE_NAMESPACE' => $this->laravel['modules']->config('namespace')
-        ]))->render();
-    }
-
-    /**
      * Get the console command arguments.
      *
      * @return array
@@ -85,57 +56,65 @@ class MakeControllerCommand extends BaseCommand
     }
 
     /**
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            [
-                'plain',
-                'p',
-                InputOption::VALUE_NONE,
-                'Generate a plain controller',
-                null
-            ]
-        ];
-    }
-
-    /**
-     *
-     * @return array|string
-     */
-    protected function getControllerName()
-    {
-        $controller = studly_case($this->argument('controller'));
-        if (str_contains(strtolower($controller), 'controller') === false) {
-            $controller .= 'Controller';
-        }
-        
-        return $controller;
-    }
-
-    /**
-     * Get default namespace.
+     * Get the desired class name from the input.
      *
      * @return string
      */
-    public function getDefaultNamespace()
+    protected function getNameInput()
     {
-        return $this->laravel['modules']->config('paths.generator.controller', 'Http/Controllers');
+        $name = Str::studly(parent::getNameInput());
+        if (Str::contains(strtolower($name), 'controller') === false) {
+            $name .= 'Controller';
+        }
+        
+        return $name;
     }
 
     /**
-     * Get the stub file name based on the plain option
+     * Get the full namespace for a given class, without the class name.
+     *
+     * @param string $name            
+     * @return string
+     */
+    protected function getNamespace($name)
+    {
+        return $this->getDefaultNamespace($this->laravel['modules']->getNamespace() . '\\' . $this->getModuleName() . trim(implode('\\', array_slice(explode('\\', $name), 0, - 1)), '\\'));
+    }
+
+    /**
+     * Get the destination class path.
+     *
+     * @param string $name            
+     * @return string
+     */
+    protected function getPath($name)
+    {
+        return str_replace('\\', '/', $this->getDefaultNamespace($this->laravel['modules']->getPath() . '/' . $this->getModuleName()) . '/' . str_replace_first($this->rootNamespace(), '', $name)) . '.php';
+    }
+
+    /**
+     * Parse the class name and format according to the root namespace.
+     *
+     * @param string $name            
+     * @return string
+     */
+    protected function qualifyClass($name)
+    {
+        return $name;
+    }
+
+    /**
+     * Get the stub file for the generator.
      *
      * @return string
      */
-    private function getStubName()
+    protected function getStub()
     {
-        if ($this->option('plain') === true) {
-            return '/plain/controller.stub';
+        $stubPath = '/controller.stub';
+        if (! $this->option('resource')) {
+            $stubPath = '/plain/controller.stub';
         }
         
-        return '/controller.stub';
+        return (new Stub($stubPath))->getPath();
     }
 }

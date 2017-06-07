@@ -20,8 +20,6 @@ return [
     */
 
     'stubs' => [
-        'enabled' => false,
-        'path' => base_path(__DIR__ . '/../src/Commands/stubs'),
         'files' => [
             'routes/web' => 'Routes/web.php',
             'routes/api' => 'Routes/api.php',
@@ -42,7 +40,7 @@ return [
                 'STUDLY_NAME',
                 'MODULE_NAMESPACE'
             ],
-            'module' => [
+            'json/module' => [
                 'LOWER_NAME',
                 'STUDLY_NAME',
                 'MODULE_NAMESPACE'
@@ -56,7 +54,7 @@ return [
             'scaffold/config' => [
                 'STUDLY_NAME'
             ],
-            'composer' => [
+            'json/composer' => [
                 'LOWER_NAME',
                 'STUDLY_NAME',
                 'VENDOR',
@@ -77,7 +75,7 @@ return [
          * |
          */
         
-        'module' => base_path('app/Modules'),
+        'module' => app_path('Modules'),
         /*
         |--------------------------------------------------------------------------
         | Modules asset paths
@@ -88,17 +86,6 @@ return [
         */
 
         'asset' => public_path('modules'),
-        /*
-         |--------------------------------------------------------------------------
-         | The model factory paths
-         |--------------------------------------------------------------------------
-         |
-         | Where you run 'module:publish-factory' command, where do you publish the
-         | the model factory files?
-         |
-         */
-        
-        'modelFactory' => base_path('database/factories'),
         /*
         |--------------------------------------------------------------------------
         | Generator path
@@ -111,9 +98,6 @@ return [
         'generator' => [
             'asset' => 'Resources/assets',
             'config' => 'Config',
-            'migration' => 'Database/Migrations',
-            'seed' => 'Database/Seeds',
-            'modelFactory' => 'Database/Factories',
             'controller' => 'Http/Controllers',
             'provider' => 'Providers',
             'lang' => 'Resources/lang',

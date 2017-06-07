@@ -41,12 +41,6 @@ class Repository implements RepositoryInterface, Countable
     protected $orders = [];
 
     /**
-     *
-     * @var string
-     */
-    protected $stubPath;
-
-    /**
      * The constructor.
      *
      * @param Application $laravel            
@@ -272,7 +266,7 @@ class Repository implements RepositoryInterface, Countable
             $eloquentFactory = new EloquentFactory($app->make(\Faker\Generator::class));
             
             foreach ($modules as $module) {
-                $eloquentFactory->load($module->getModelFactoryPath());
+                $eloquentFactory->load($module->getFactoryPath());
             }
             
             return $eloquentFactory;
@@ -292,7 +286,8 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Create a model factory builder for a given class, name, and amount.
      *
-     * @param dynamic class|class,name|class,amount|class,name,amount
+     * @param
+     *            dynamic class|class,name|class,amount|class,name,amount
      * @return \Illuminate\Database\Eloquent\FactoryBuilder
      */
     public function factory()
@@ -554,33 +549,12 @@ class Repository implements RepositoryInterface, Countable
     }
 
     /**
-     * Get stub path.
+     * Get module namespace.
      *
      * @return string
      */
-    public function getStubPath()
+    public function getNamespace()
     {
-        if ($this->stubPath !== null) {
-            return $this->stubPath;
-        }
-        
-        if ($this->config('stubs.enabled') === true) {
-            return $this->config('stubs.path');
-        }
-        
-        return $this->stubPath;
-    }
-
-    /**
-     * Set stub path.
-     *
-     * @param string $stubPath            
-     * @return $this
-     */
-    public function setStubPath($stubPath)
-    {
-        $this->stubPath = $stubPath;
-        
-        return $this;
+        return $this->config('namespace');
     }
 }

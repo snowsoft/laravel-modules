@@ -1,15 +1,12 @@
 <?php
 namespace Llama\Modules\Commands;
 
-use Llama\Modules\Traits\MigrationLoaderTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Console\Command;
 
 class MigrateRollbackCommand extends Command
 {
-    use MigrationLoaderTrait;
-
     /**
      * The console command name.
      *

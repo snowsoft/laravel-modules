@@ -1,9 +1,9 @@
 <?php
 
-namespace $CLASS_NAMESPACE$;
+namespace DummyNamespace;
 
-use Illuminate\Routing\Controller;
+use DummyRootNamespaceHttp\Controllers\Controller;
 
-class $CLASS$ extends Controller
+class DummyClass extends Controller
 {
 }
