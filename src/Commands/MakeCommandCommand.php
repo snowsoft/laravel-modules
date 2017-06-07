@@ -58,7 +58,7 @@ class MakeCommandCommand extends ConsoleMakeCommand
      */
     protected function rootNamespace()
     {
-        return $this->laravel['modules']->config('namespace') . '\\' . $this->getModuleName();
+        return $this->laravel['modules']->getNamespace() . '\\' . $this->getModuleName();
     }
 
     /**

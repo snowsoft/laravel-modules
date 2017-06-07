@@ -51,7 +51,21 @@ class MakeModelCommand extends ModelMakeCommand
             ]
         ];
     }
-
+    
+    /**
+     *
+     * @return array|string
+     */
+    protected function getNameInput()
+    {
+        $name = Str::studly(parent::getNameInput());
+        if (Str::contains(strtolower($name), 'model') === false) {
+            $name .= 'Model';
+        }
+        
+        return $name;
+    }
+    
     /**
      * Get the root namespace for the class.
      *
@@ -59,7 +73,7 @@ class MakeModelCommand extends ModelMakeCommand
      */
     protected function rootNamespace()
     {
-        return $this->laravel['modules']->config('namespace') . '\\' . $this->getModuleName() . '\\' . $this->laravel['modules']->config('paths.generator.model', 'Models');
+        return $this->laravel['modules']->getNamespace() . '\\' . $this->getModuleName();
     }
 
     /**
@@ -70,7 +84,18 @@ class MakeModelCommand extends ModelMakeCommand
      */
     protected function getPath($name)
     {
-        return $this->laravel['modules']->getPath() . '/' . $this->getModuleName() . '/' . $this->laravel['modules']->config('paths.generator.model', 'Models') . str_replace('\\', '/', str_replace_first($this->rootNamespace(), '', $name)) . '.php';
+        return $this->laravel['modules']->getPath() . '/' . $this->getModuleName() . str_replace('\\', '/', str_replace_first($this->rootNamespace(), '', $name)) . '.php';
+    }
+    
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param string $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace . '\Models';
     }
 
     /**

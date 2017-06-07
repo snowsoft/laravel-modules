@@ -31,6 +31,7 @@ use Llama\Modules\Commands\MakeSeederCommand;
 use Llama\Modules\Commands\SetupCommand;
 use Llama\Modules\Commands\UpdateCommand;
 use Llama\Modules\Commands\UseCommand;
+use Llama\Modules\Commands\MakePolicyCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -76,7 +77,8 @@ class ConsoleServiceProvider extends ServiceProvider
         MakeRequestCommand::class,
         MakeJobCommand::class,
         MakeMailCommand::class,
-        MakeNotificationCommand::class
+        MakeNotificationCommand::class,
+        MakePolicyCommand::class
     ];
 
     /**

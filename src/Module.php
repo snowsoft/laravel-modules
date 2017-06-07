@@ -19,7 +19,7 @@ class Module extends ServiceProvider
     /**
      * The module name.
      *
-     * @var
+     * @var string
      *
      */
     protected $name;
@@ -343,14 +343,24 @@ class Module extends ServiceProvider
     {
         return $this->getExtraPath($this->laravel['modules']->config('paths.generator.migration', 'Database/Migrations'));
     }
-    
+
     /**
      * Get model factory path.
      *
      * @return string
      */
-    public function getModelFactoryPath()
+    public function getFactoryPath()
     {
-        return $this->getExtraPath($this->laravel['modules']->config('paths.generator.modelFactory', 'Database/Factories'));
+        return $this->getExtraPath($this->laravel['modules']->config('paths.generator.factory', 'Database/Factories'));
+    }
+
+    /**
+     * Get module namespace.
+     *
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return $this->laravel['modules']->getNamespace() . '\\' . $this->getStudlyName();
     }
 }

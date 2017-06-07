@@ -1,12 +1,12 @@
 <?php
 
-namespace $CLASS_NAMESPACE$;
+namespace DummyNamespace;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
+use DummyRootNamespaceHttp\Controllers\Controller;
 
-class $CLASS$ extends Controller
+class DummyClass extends Controller
 {
     /**
      * Display a listing of the resource.

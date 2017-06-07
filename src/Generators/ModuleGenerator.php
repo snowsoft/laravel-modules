@@ -274,16 +274,17 @@ class ModuleGenerator extends Generator
         $this->console->call('module:make-provider', [
             'name' => $this->getName() . 'ServiceProvider',
             'module' => $this->getName(),
-            '--plain' => $this->plain
+            '--plain' => false
         ]);
         
         $this->console->call('module:make-route', [
+            'name' => $this->getName() . 'RouteServiceProvider',
             'module' => $this->getName(),
-            '--plain' => $this->plain
+            '--plain' => false
         ]);
         
         $this->console->call('module:make-controller', [
-            'controller' => $this->getName() . 'Controller',
+            'name' => $this->getName() . 'Controller',
             'module' => $this->getName()
         ]);
     }
@@ -291,9 +292,7 @@ class ModuleGenerator extends Generator
     /**
      * Get the contents of the specified stub file by given stub name.
      *
-     * @param
-     *            $stub
-     *            
+     * @param string $stub            
      * @return Stub
      */
     protected function getStubContents($stub)
@@ -312,9 +311,7 @@ class ModuleGenerator extends Generator
     /**
      * Get array replacement for the specified stub.
      *
-     * @param
-     *            $stub
-     *            
+     * @param string $stub            
      * @return array
      */
     protected function getReplacement($stub)
@@ -376,7 +373,7 @@ class ModuleGenerator extends Generator
      */
     protected function getModuleNamespaceReplacement()
     {
-        return str_replace('\\', '\\\\', $this->module->config('namespace'));
+        return str_replace('\\', '\\\\', $this->module->getNamespace());
     }
 
     /**
