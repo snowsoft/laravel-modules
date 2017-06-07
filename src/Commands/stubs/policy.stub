@@ -1,0 +1,55 @@
+<?php
+
+namespace DummyNamespace;
+
+use NamespacedDummyModel;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class DummyClass
+{
+    use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view the dummyModel.
+     *
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function view(DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can create dummyModel.
+     *
+     * @param \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function create(DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can update the dummyModel.
+     *
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function update(DummyModel $dummyModel)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can delete the dummyModel.
+     *
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function delete(DummyModel $dummyModel)
+    {
+        //
+    }
+}
