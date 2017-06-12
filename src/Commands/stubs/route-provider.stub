@@ -3,9 +3,8 @@
 namespace DummyNamespace;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as BaseRouteServiceProvider;
 
-class DummyClass extends BaseRouteServiceProvider
+class DummyClass extends \Illuminate\Foundation\Support\Providers\RouteServiceProvider
 {
     /**
      * This namespace is applied to your controller routes.
@@ -53,6 +52,8 @@ class DummyClass extends BaseRouteServiceProvider
         Route::group([
             'middleware' => 'web',
             'namespace' => $this->namespace,
+            'prefix' => 'DummyRoutePrefix',
+            'as' => 'DummyRoutePrefix.'
         ], function ($router) {
             require __DIR__ . '/../DummyRoutePath/web.php';;
         });
@@ -70,7 +71,8 @@ class DummyClass extends BaseRouteServiceProvider
         Route::group([
             'middleware' => 'api',
             'namespace' => $this->namespace,
-            'prefix' => 'api',
+            'prefix' => 'api/DummyRoutePrefix',
+            'as' => 'api.DummyRoutePrefix.'
         ], function ($router) {
             require __DIR__ . '/../DummyRoutePath/api.php';
         });

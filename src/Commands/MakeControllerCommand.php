@@ -73,7 +73,7 @@ class MakeControllerCommand extends ControllerMakeCommand
     /**
      * Get the full namespace for a given class, without the class name.
      *
-     * @param string $name            
+     * @param string $name
      * @return string
      */
     protected function getNamespace($name)
@@ -84,7 +84,7 @@ class MakeControllerCommand extends ControllerMakeCommand
     /**
      * Get the destination class path.
      *
-     * @param string $name            
+     * @param string $name
      * @return string
      */
     protected function getPath($name)
@@ -95,7 +95,7 @@ class MakeControllerCommand extends ControllerMakeCommand
     /**
      * Parse the class name and format according to the root namespace.
      *
-     * @param string $name            
+     * @param string $name
      * @return string
      */
     protected function qualifyClass($name)
@@ -116,5 +116,22 @@ class MakeControllerCommand extends ControllerMakeCommand
         }
         
         return (new Stub($stubPath))->getPath();
+    }
+
+    /**
+     * Build the class with the given name.
+     *
+     * Remove the base controller import if we are already in base namespace.
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function buildClass($name)
+    {
+        $replace = [
+            'DummyViewNamespace' => strtolower($this->getModuleName())
+        ];
+        
+        return str_replace(array_keys($replace), array_values($replace), parent::buildClass($name));
     }
 }

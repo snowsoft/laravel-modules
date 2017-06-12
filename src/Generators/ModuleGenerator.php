@@ -1,7 +1,6 @@
 <?php
 namespace Llama\Modules\Generators;
 
-use Illuminate\Config\Repository as Config;
 use Illuminate\Console\Command as Console;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
@@ -34,7 +33,7 @@ class ModuleGenerator extends Generator
     /**
      * The pingpong module instance.
      *
-     * @var Module
+     * @var \Llama\Modules\Module
      */
     protected $module;
 
@@ -138,7 +137,7 @@ class ModuleGenerator extends Generator
     /**
      * Get the pingpong module instance.
      *
-     * @return Module
+     * @return \Llama\Modules\Module
      */
     public function getModule()
     {
@@ -285,7 +284,8 @@ class ModuleGenerator extends Generator
         
         $this->console->call('module:make-controller', [
             'name' => $this->getName() . 'Controller',
-            'module' => $this->getName()
+            'module' => $this->getName(),
+            '--resource' => true
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace Llama\Modules\Commands;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Console\Command;
+use Llama\Modules\Module;
 
 class MigrateRollbackCommand extends Command
 {

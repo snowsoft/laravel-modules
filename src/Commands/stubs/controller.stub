@@ -14,7 +14,7 @@ class DummyClass extends Controller
      */
     public function index()
     {
-        return view('$LOWER_NAME$::index');
+        return view('DummyViewNamespace::index');
     }
 
     /**
@@ -23,7 +23,7 @@ class DummyClass extends Controller
      */
     public function create()
     {
-        return view('$LOWER_NAME$::create');
+        return view('DummyViewNamespace::create');
     }
 
     /**
@@ -41,7 +41,7 @@ class DummyClass extends Controller
      */
     public function edit()
     {
-        return view('$LOWER_NAME$::edit');
+        return view('DummyViewNamespace::edit');
     }
 
     /**
