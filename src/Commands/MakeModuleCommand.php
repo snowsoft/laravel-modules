@@ -1,10 +1,10 @@
 <?php
 namespace Llama\Modules\Commands;
 
-use Llama\Modules\Generators\ModuleGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Console\Command;
+use Llama\Modules\Generators\ModuleGenerator;
 
 class MakeModuleCommand extends Command
 {

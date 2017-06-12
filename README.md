@@ -253,13 +253,13 @@ php artisan module:make-controller SiteController blog
 Publish assets from the specified module to public directory.
 
 ```
-php artisan module:publish-asset blog
+php artisan module:link blog
 ```
 
 Publish assets from all modules to public directory.
 
 ```
-php artisan module:publish-asset
+php artisan module:link
 ```
 
 Create new model for the specified module.
