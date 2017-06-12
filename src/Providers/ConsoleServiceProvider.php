@@ -25,13 +25,13 @@ use Llama\Modules\Commands\MigrateResetCommand;
 use Llama\Modules\Commands\MigrateRollbackCommand;
 use Llama\Modules\Commands\MakeMigrationCommand;
 use Llama\Modules\Commands\MakeModelCommand;
-use Llama\Modules\Commands\PublishAssetCommand;
 use Llama\Modules\Commands\DbSeedCommand;
 use Llama\Modules\Commands\MakeSeederCommand;
 use Llama\Modules\Commands\SetupCommand;
 use Llama\Modules\Commands\UpdateCommand;
 use Llama\Modules\Commands\UseCommand;
 use Llama\Modules\Commands\MakePolicyCommand;
+use Llama\Modules\Commands\MakeLinkCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -67,7 +67,6 @@ class ConsoleServiceProvider extends ServiceProvider
         MigrateRollbackCommand::class,
         MakeMigrationCommand::class,
         MakeModelCommand::class,
-        PublishAssetCommand::class,
         DbSeedCommand::class,
         MakeSeederCommand::class,
         SetupCommand::class,
@@ -78,7 +77,8 @@ class ConsoleServiceProvider extends ServiceProvider
         MakeJobCommand::class,
         MakeMailCommand::class,
         MakeNotificationCommand::class,
-        MakePolicyCommand::class
+        MakePolicyCommand::class,
+        MakeLinkCommand::class
     ];
 
     /**
