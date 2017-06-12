@@ -61,7 +61,17 @@ class MakeRouteProviderCommand extends MakeProviderCommand
      */
     protected function replaceControllerNamespace()
     {
-        return $this->rootNamespace() . '\\' . $this->getModuleName() . '\\Http\\Controllers';
+        return $this->rootNamespace() . '\\Http\\Controllers';
+    }
+    
+    /**
+     * Replace the route prefix for the given stub.
+     *
+     * @return string
+     */
+    protected function replaceRoutePrefix()
+    {
+        return strtolower($this->getModuleName());
     }
 
     /**
@@ -79,6 +89,10 @@ class MakeRouteProviderCommand extends MakeProviderCommand
             'DummyRoutePath' => [
                 $this,
                 'replaceRoutePath'
+            ],
+            'DummyRoutePrefix' => [
+                $this,
+                'replaceRoutePrefix'
             ]
         ]);
     }
