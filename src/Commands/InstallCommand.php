@@ -32,8 +32,7 @@ class InstallCommand extends Command
     public function fire()
     {
         if (is_null($this->argument('name'))) {
-            $this->installFromFile();
-            return;
+            return $this->installFromFile();
         }
         
         $this->install($this->argument('name'), $this->argument('version'), $this->option('type'), $this->option('tree'));
@@ -52,17 +51,20 @@ class InstallCommand extends Command
         $requires = Json::make($this->laravel, $path)->get('require', []);
         foreach ($requires as $module) {
             $module = collect($module);
-            $this->install($module->json()->get('name'), $module->json()->get('version'), $module->json()->get('type'));
+            $this->install($module->json()
+                ->get('name'), $module->json()
+                ->get('version'), $module->json()
+                ->get('type'));
         }
     }
 
     /**
      * Install the specified module.
      *
-     * @param string $name            
-     * @param string $version            
-     * @param string $type            
-     * @param bool $tree            
+     * @param string $name
+     * @param string $version
+     * @param string $type
+     * @param bool $tree
      */
     protected function install($name, $version = 'dev-master', $type = 'composer', $tree = false)
     {
