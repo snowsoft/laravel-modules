@@ -43,8 +43,8 @@ class Repository implements RepositoryInterface, Countable
     /**
      * The constructor.
      *
-     * @param Application $laravel            
-     * @param string|null $path            
+     * @param Application $laravel
+     * @param string|null $path
      */
     public function __construct(Application $app, $path = null)
     {
@@ -55,7 +55,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Add other module location.
      *
-     * @param string $path            
+     * @param string $path
      *
      * @return $this
      */
@@ -83,9 +83,9 @@ class Repository implements RepositoryInterface, Countable
      */
     public function getScannedLocations()
     {
-        $locations = $this->locations;
-        
-        $locations[] = $this->getPath() . '/*';
+        $locations = array_merge($this->locations, [
+            $this->getPath() . '/*'
+        ]);
         
         if ($this->config('scan.enabled')) {
             $locations = array_merge($locations, $this->config('scan.paths'));
@@ -101,13 +101,9 @@ class Repository implements RepositoryInterface, Countable
      */
     public function scan()
     {
-        $locations = $this->getScannedLocations();
-        
         $modules = [];
-        
-        foreach ($locations as $key => $path) {
+        foreach ($this->getScannedLocations() as $key => $path) {
             $manifests = $this->getFiles()->glob("{$path}/module.json");
-            
             if (! is_array($manifests)) {
                 $manifests = [];
             }
@@ -138,7 +134,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Format the cached data as array of modules.
      *
-     * @param array $cached            
+     * @param array $cached
      * @return array
      */
     protected function formatCached($cached)
@@ -158,7 +154,7 @@ class Repository implements RepositoryInterface, Countable
      */
     public function getCached()
     {
-        return $this->laravel['cache']->remember($this->config('cache.key'), $this->config('cache.lifetime'), function () {
+        return $this->laravel['cache']->remember($this->config('cache.key') ?: __CLASS__, $this->config('cache.lifetime'), function () {
             return $this->toCollection()
                 ->toArray();
         });
@@ -177,7 +173,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Get modules by status.
      *
-     * @param int $status            
+     * @param int $status
      * @return array
      */
     public function getByStatus($status)
@@ -195,7 +191,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Determine whether the given module exist.
      *
-     * @param string $name            
+     * @param string $name
      * @return bool
      */
     public function has($name)
@@ -216,7 +212,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Get all ordered modules.
      *
-     * @param string $direction            
+     * @param string $direction
      * @return array
      */
     public function getOrdered($direction = 'asc')
@@ -307,7 +303,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Find a specific module.
      *
-     * @param string $name            
+     * @param string $name
      * @return string|null
      */
     public function find($name)
@@ -324,7 +320,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Alternative for "find" method.
      *
-     * @param string $name            
+     * @param string $name
      * @return mixed|void
      */
     public function get($name)
@@ -335,7 +331,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Find a specific module, if there return that, otherwise throw exception.
      *
-     * @param string $name            
+     * @param string $name
      * @return Module
      * @throws ModuleNotFoundException
      */
@@ -362,7 +358,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Get module path for a specific module.
      *
-     * @param string $module            
+     * @param string $module
      * @return string
      */
     public function getModulePath($module)
@@ -377,7 +373,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Get asset path for a specific module.
      *
-     * @param string $module            
+     * @param string $module
      * @return string
      */
     public function assetPath($module)
@@ -388,8 +384,8 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Get a specific config data from a configuration file.
      *
-     * @param string $key            
-     * @param mixed $default            
+     * @param string $key
+     * @param mixed $default
      * @return mixed
      */
     public function config($key, $default = null)
@@ -414,7 +410,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Setter and getter used module for cli session.
      *
-     * @param string $name            
+     * @param string $name
      * @return string|null
      * @throws ModuleNotFoundException
      */
@@ -458,7 +454,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Get asset url from a specific module.
      *
-     * @param string $asset            
+     * @param string $asset
      * @return string
      */
     public function asset($asset)
@@ -494,7 +490,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Enabling a specific module.
      *
-     * @param string $name            
+     * @param string $name
      * @return bool
      */
     public function enable($name)
@@ -505,7 +501,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Disabling a specific module.
      *
-     * @param string $name            
+     * @param string $name
      * @return bool
      */
     public function disable($name)
@@ -516,7 +512,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Delete a specific module.
      *
-     * @param string $name            
+     * @param string $name
      * @return bool
      */
     public function delete($name)
@@ -527,7 +523,7 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Update dependencies for the specified module.
      *
-     * @param string $module            
+     * @param string $module
      */
     public function update($module)
     {
@@ -537,10 +533,10 @@ class Repository implements RepositoryInterface, Countable
     /**
      * Install the specified module.
      *
-     * @param string $name            
-     * @param string $version            
-     * @param string $type            
-     * @param bool $subtree            
+     * @param string $name
+     * @param string $version
+     * @param string $type
+     * @param bool $subtree
      * @return \Symfony\Component\Process\Process
      */
     public function install($name, $version = 'dev-master', $type = 'composer', $subtree = false)
@@ -555,6 +551,6 @@ class Repository implements RepositoryInterface, Countable
      */
     public function getNamespace()
     {
-        return $this->config('namespace');
+        return rtrim($this->config('namespace'), '\\');
     }
 }

@@ -55,7 +55,7 @@ class DummyClass extends \Illuminate\Foundation\Support\Providers\RouteServicePr
             'prefix' => 'DummyRoutePrefix',
             'as' => 'DummyRoutePrefix.'
         ], function ($router) {
-            require __DIR__ . '/../DummyRoutePath/web.php';;
+            require __DIR__ . '/../DummyRoutePath/web.php';
         });
     }
 

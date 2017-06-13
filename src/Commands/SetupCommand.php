@@ -2,6 +2,7 @@
 namespace Llama\Modules\Commands;
 
 use Illuminate\Console\Command;
+use Llama\Modules\Json;
 
 class SetupCommand extends Command
 {
@@ -18,7 +19,7 @@ class SetupCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Setting up module folders for first use.';
+    protected $description = 'Setting up modules folder for first use.';
 
     /**
      * Execute the console command.
@@ -29,12 +30,13 @@ class SetupCommand extends Command
     {
         $this->generateModulesFolder();
         $this->generateAssetsFolder();
+        $this->generateComposerAutoloadingSections();
     }
 
     /**
      * Generate the modules folder.
      */
-    public function generateModulesFolder()
+    protected function generateModulesFolder()
     {
         $this->generateDirectory($this->laravel['modules']->getPath(), 'Modules directory created successfully', 'Modules directory already exist');
     }
@@ -42,7 +44,7 @@ class SetupCommand extends Command
     /**
      * Generate the assets folder.
      */
-    public function generateAssetsFolder()
+    protected function generateAssetsFolder()
     {
         $this->generateDirectory($this->laravel['modules']->getAssetsPath(), 'Assets directory created successfully', 'Assets directory already exist');
     }
@@ -50,23 +52,37 @@ class SetupCommand extends Command
     /**
      * Generate the specified directory by given $dir.
      *
-     * @param
-     *            $dir
-     * @param
-     *            $success
-     * @param
-     *            $error
+     * @param string $dir
+     * @param string $success
+     * @param string $error
      */
     protected function generateDirectory($dir, $success, $error)
     {
         if (! $this->laravel['files']->isDirectory($dir)) {
             $this->laravel['files']->makeDirectory($dir);
-            
-            $this->info($success);
-            
-            return;
+            return $this->info($success);
         }
         
         $this->error($error);
+    }
+
+    /**
+     * Adding processing autoloading sections to the command line interface.
+     */
+    protected function generateComposerAutoloadingSections()
+    {
+        try {
+            // Modify composer.json
+            $composerJson = Json::make($this->laravel, base_path('composer.json'));
+            $composerJson->add('autoload.psr-4.' . $this->laravel['modules']->getNamespace() . '\\', trim(str_replace(base_path(), '', $this->laravel['modules']->config('paths.module')), '/') . '/');
+            $composerJson->save();
+            
+            // Regenerate the optimized Composer autoloader files.
+            $this->laravel['composer']->dumpOptimized();
+            
+            $this->info('The module namespace added successfully');
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
     }
 }

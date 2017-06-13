@@ -9,7 +9,7 @@ return [
      * |
      */
     
-    'namespace' => 'App\Modules',
+    'namespace' => 'Modules',
     /*
     |--------------------------------------------------------------------------
     | Module Stubs
@@ -75,7 +75,7 @@ return [
          * |
          */
         
-        'module' => app_path('Modules'),
+        'module' => app_path('modules'),
         /*
         |--------------------------------------------------------------------------
         | Modules asset paths

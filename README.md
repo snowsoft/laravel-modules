@@ -55,7 +55,7 @@ Next, add the following aliases to `aliases` array in the same file.
 ],
 ```
 
-Next publish the package's configuration file by running :
+Next publish the package's configuration file by running:
 
 ```
 php artisan vendor:publish --provider="Llama\Modules\ModuleServiceProvider"
@@ -63,7 +63,7 @@ php artisan vendor:publish --provider="Llama\Modules\ModuleServiceProvider"
 
 #### Autoloading
 
-By default controllers, entities or repositories are not loaded automatically. You can autoload your modules using `psr-4`. For example :
+By default controllers, entities or repositories are not loaded automatically. You can autoload your modules using `psr-4`. For example:
 
 ```json
 {
@@ -73,6 +73,12 @@ By default controllers, entities or repositories are not loaded automatically. Y
     }
   }
 }
+```
+
+After that, you must run statement below for dumps the autoloader:
+
+```shell
+composer dump-autoload -o
 ```
 
 ## Configuration
@@ -96,7 +102,7 @@ By default controllers, entities or repositories are not loaded automatically. Y
 
 ## Creating A Module
 
-To create a new module, you can simply run:
+**To create a new module, you can simply run:**
 
 ```
 php artisan module:make <module-name>
@@ -104,24 +110,12 @@ php artisan module:make <module-name>
 
 - `<module-name>` - Required. The name of module will be created.
 
-**Create a new module**
-
-```
-php artisan module:make Blog
-```
-
-**Create multiple modules**
-
-```
-php artisan module:make Blog User Auth
-```
-
 By default if you create a new module, that will add some resources like controller, seed class or provider automatically. If you don't want these, you can add `--plain` flag, to generate a plain module.
 
 ```shell
-php artisan module:make Blog --plain
+php artisan module:make <module-name> --plain
 #OR
-php artisan module:make Blog -p
+php artisan module:make <module-name> -p
 ```
 
 **Naming Convention**
@@ -152,7 +146,7 @@ your-laravel/app/Modules/
 
 ## Artisan Commands
 
-Setting up modules folders for first use
+You must be setting up modules folder for first use
 
 ```
 php artisan module:setup
@@ -642,7 +636,7 @@ Have you created a laravel modules? Yes, I've. Then, I want to publish my module
 
 ### Auto Scan Vendor Directory
 
-By default the `vendor` directory is not scanned automatically, you need to update the configuration file to allow that. Set `scan.enabled` value to `true`. For example :
+By default the `vendor` directory is not scanned automatically, you need to update the configuration file to allow that. Set `scan.enabled` value to `true`. For example:
 
 ```php
 // file config/modules.php

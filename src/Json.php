@@ -38,16 +38,16 @@ class Json
     /**
      * The constructor.
      *
-     * @param Application $laravel            
-     * @param mixed $path            
-     * @param Filesystem $filesystem            
+     * @param Application $laravel
+     * @param mixed $path
+     * @param Filesystem $filesystem
      */
     public function __construct(Application $app, $path, Filesystem $filesystem = null)
     {
         $this->laravel = $app;
         $this->path = (string) $path;
         $this->filesystem = $filesystem ?: new Filesystem();
-        $this->attributes = Collection::make($this->getAttributes());
+        $this->attributes = Collection::make(json_decode($this->getContents(), \JSON_OBJECT_AS_ARRAY));
     }
 
     /**
@@ -63,7 +63,7 @@ class Json
     /**
      * Set filesystem.
      *
-     * @param Filesystem $filesystem            
+     * @param Filesystem $filesystem
      *
      * @return $this
      */
@@ -87,7 +87,7 @@ class Json
     /**
      * Set path.
      *
-     * @param mixed $path            
+     * @param mixed $path
      *
      * @return $this
      */
@@ -101,9 +101,9 @@ class Json
     /**
      * Make new instance.
      *
-     * @param Application $laravel            
-     * @param string $path            
-     * @param Filesystem $filesystem            
+     * @param Application $laravel
+     * @param string $path
+     * @param Filesystem $filesystem
      *
      * @return static
      */
@@ -129,19 +129,13 @@ class Json
      */
     public function getAttributes()
     {
-        if ($this->laravel['modules']->config('cache.enabled') === false) {
-            return json_decode($this->getContents(), 1);
-        }
-        
-        return app('cache')->remember($this->getPath(), $this->laravel['modules']->config('cache.lifetime'), function () {
-            return json_decode($this->getContents(), 1);
-        });
+        return $this->attributes;
     }
 
     /**
      * Convert the given array data to pretty json.
      *
-     * @param array $data            
+     * @param array $data
      *
      * @return string
      */
@@ -153,13 +147,13 @@ class Json
     /**
      * Update json contents from array data.
      *
-     * @param array $data            
+     * @param array $data
      *
      * @return bool
      */
     public function update(array $data)
     {
-        $this->attributes = new Collection(array_merge($this->attributes->toArray(), $data));
+        $this->attributes = $this->attributes->merge($data);
         
         return $this->save();
     }
@@ -167,8 +161,8 @@ class Json
     /**
      * Set a specific key & value.
      *
-     * @param string $key            
-     * @param mixed $value            
+     * @param string $key
+     * @param mixed $value
      *
      * @return $this
      */
@@ -192,7 +186,7 @@ class Json
     /**
      * Handle magic method __get.
      *
-     * @param string $key            
+     * @param string $key
      *
      * @return mixed
      */
@@ -206,7 +200,7 @@ class Json
      *
      * @param
      *            $key
-     * @param null $default            
+     * @param null $default
      *
      * @return mixed
      */
@@ -218,8 +212,8 @@ class Json
     /**
      * Handle call to __call method.
      *
-     * @param string $method            
-     * @param array $arguments            
+     * @param string $method
+     * @param array $arguments
      *
      * @return mixed
      */
