@@ -54,7 +54,7 @@ class ModuleGenerator extends Generator
     /**
      * The constructor.
      *
-     * @param string $name            
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -64,7 +64,7 @@ class ModuleGenerator extends Generator
     /**
      * Set plain flag.
      *
-     * @param bool $plain            
+     * @param bool $plain
      *
      * @return $this
      */
@@ -99,7 +99,7 @@ class ModuleGenerator extends Generator
     /**
      * Set the laravel filesystem instance.
      *
-     * @param Filesystem $filesystem            
+     * @param Filesystem $filesystem
      *
      * @return $this
      */
@@ -123,7 +123,7 @@ class ModuleGenerator extends Generator
     /**
      * Set the laravel console instance.
      *
-     * @param Console $console            
+     * @param Console $console
      *
      * @return $this
      */
@@ -147,7 +147,7 @@ class ModuleGenerator extends Generator
     /**
      * Set the pingpong module instance.
      *
-     * @param mixed $module            
+     * @param mixed $module
      *
      * @return $this
      */
@@ -181,7 +181,7 @@ class ModuleGenerator extends Generator
     /**
      * Set force status.
      *
-     * @param bool|int $force            
+     * @param bool|int $force
      *
      * @return $this
      */
@@ -234,7 +234,7 @@ class ModuleGenerator extends Generator
     /**
      * Generate git keep to the specified path.
      *
-     * @param string $path            
+     * @param string $path
      */
     protected function generateGitKeep($path)
     {
@@ -292,7 +292,7 @@ class ModuleGenerator extends Generator
     /**
      * Get the contents of the specified stub file by given stub name.
      *
-     * @param string $stub            
+     * @param string $stub
      * @return Stub
      */
     protected function getStubContents($stub)
@@ -311,7 +311,7 @@ class ModuleGenerator extends Generator
     /**
      * Get array replacement for the specified stub.
      *
-     * @param string $stub            
+     * @param string $stub
      * @return array
      */
     protected function getReplacement($stub)
@@ -394,5 +394,15 @@ class ModuleGenerator extends Generator
     protected function getAuthorEmailReplacement()
     {
         return $this->module->config('composer.author.email');
+    }
+
+    /**
+     * Get replacement for $MODULE_PATH$.
+     *
+     * @return string
+     */
+    protected function getModulePathReplacement()
+    {
+        return trim(str_replace(base_path(), '', $this->module->getModulePath($this->getName())), '/') . '/';
     }
 }

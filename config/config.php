@@ -60,7 +60,8 @@ return [
                 'VENDOR',
                 'AUTHOR_NAME',
                 'AUTHOR_EMAIL',
-                'MODULE_NAMESPACE'
+                'MODULE_NAMESPACE',
+                'MODULE_PATH'
             ]
         ]
     ],
@@ -75,7 +76,7 @@ return [
          * |
          */
         
-        'module' => app_path('modules'),
+        'module' => base_path('modules'),
         /*
         |--------------------------------------------------------------------------
         | Modules asset paths
